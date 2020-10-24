@@ -1,0 +1,33 @@
+<section class="details">
+  <header>
+    <h2>{{originalIngredient.name}}</h2>
+    <button mat-raised-button color="warn">Delete</button>
+  </header>
+  <form [formGroup]="ingredientDetailsForm" (submit)="save(ingredientDetailsForm.value)">
+    <mat-form-field class="full-width-field" appearance="standard">
+      <mat-label>Ingredient name</mat-label>
+      <input matInput formControlName="name" required />
+      <mat-error *ngIf="ingredientDetailsForm.get('name').hasError('required')">
+        Ingredient name is required
+      </mat-error>
+    </mat-form-field>
+    <section class="form-actions">
+      <button
+        class="cancel"
+        type="submit"
+        mat-raised-button
+        (click)="cancel()"
+      >
+        Cancel
+      </button>
+      <button
+        class="update"
+        type="submit"
+        mat-raised-button color="primary"
+        [disabled]="!ingredientDetailsForm.valid"
+      >
+        Update
+      </button>
+    </section>
+  </form>
+</section>

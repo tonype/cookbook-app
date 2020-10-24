@@ -1,18 +1,18 @@
-<article class="details">
+<section class="details">
   <h2>{{ recipe.name }}</h2>
-  <section>
-    <div>
+  <section class="times">
+    <article>
       <h3>Prep Time</h3>
       <div>{{ recipe.prepTime }}</div>
-    </div>
-    <div>
+    </article>
+    <article>
       <h3>Cook Time</h3>
       <div>{{ recipe.cookTime }}</div>
-    </div>
-    <div>
+    </article>
+    <article>
       <h3>Total Time</h3>
       <div>{{ recipe.cookTime + recipe.prepTime }}</div>
-    </div>
+    </article>
   </section>
   <section class="description">
     <h3>Description</h3>
@@ -34,4 +34,4 @@
       </li>
     </ol>
   </section>
-</article>
+</section>

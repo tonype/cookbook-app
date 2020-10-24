@@ -17,6 +17,17 @@ const listIngredients = async (req, res, next) => {
     }
 };
 
+const createIngredient = async (req, res, next) => {
+    try {
+        const ingredient = await Ingredients.create(req.body);
+        debug(`created ingredient: ${ingredient.name}`);
+        res.json(ingredient);
+    } catch(e) {
+        debug(e);
+        next(e);
+    }
+};
+
 const getIngredient = async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -35,12 +46,13 @@ const getIngredient = async (req, res, next) => {
     }
 };
 
-const createIngredient = async (req, res, next) => {
+const updateIngredient = async (req, res, next) => {
     try {
-        const ingredient = await Ingredients.create(req.body);
-        debug(`created ingredient: ${ingredient.name}`);
+        const ingredient = await Ingredients.update(req.body);
+    
+        debug(`ingredient with id of ${req.body.id} updated`);
         res.json(ingredient);
-    } catch(e) {
+    } catch (e) {
         debug(e);
         next(e);
     }
@@ -49,5 +61,6 @@ const createIngredient = async (req, res, next) => {
 router.get('/', listIngredients);
 router.post('/', createIngredient);
 router.get('/:id', getIngredient);
+router.put('/:id', updateIngredient);
 
 module.exports = router;

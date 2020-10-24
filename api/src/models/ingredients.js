@@ -15,10 +15,16 @@ const Ingredient = db.model('Ingredient', {
 const get = async (_id) => await Ingredient.findById(_id);
 const create = async (ingredient) => await Ingredient.create(ingredient);
 const list = async () => await Ingredient.find();
+const update = async (ingredient) => {
+    return await Ingredient.replaceOne(
+        { _id: ingredient.id }, ingredient
+    );
+}
 
 module.exports = {
     get,
     create,
     list,
+    update,
     model: Ingredient
 };

@@ -5,4 +5,9 @@ section {
 .details {
   margin: 1em auto auto;
   max-width: 60em;
+
+  .times {
+    display: flex;
+    justify-content: space-between;
+  }
 }

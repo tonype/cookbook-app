@@ -18,4 +18,8 @@ export class IngredientsService {
   get(id: string): Observable<any> {
     return this.http.get(`${this.rootUrl}/${id}`);
   }
+
+  update(ingredient: any): Observable<any> {
+    return this.http.put(`${this.rootUrl}/${ingredient.id}`, ingredient);
+  }
 }

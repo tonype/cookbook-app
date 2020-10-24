@@ -1,8 +1,15 @@
-<mat-list class="ingredient-list">
-  <mat-list-item class="ingredient"
-    *ngFor="let ingredient of ingredients | async"
-    [routerLink]="['./', ingredient._id]"
-  >
-    <p>{{ ingredient.name }}</p>
-  </mat-list-item>
-</mat-list>
+<section class="ingredient-list">
+  <section class="list-actions">
+    <button class="add-ingredient" mat-fab color="primary">
+      <mat-icon>add</mat-icon>
+    </button>
+  </section>
+  <mat-list>
+    <mat-list-item class="ingredient"
+      *ngFor="let ingredient of ingredients | async"
+      [routerLink]="['./', ingredient._id]"
+    >
+      {{ ingredient.name }}
+    </mat-list-item>
+  </mat-list>
+</section>

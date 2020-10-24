@@ -1,18 +1,27 @@
 $grey: rgba(219,204,219,0.66);
 
 .ingredient-list {
-  margin: 1em auto;
-  max-width: 40em;
-}
+  margin: 1em auto auto;
+  max-width: 60em;
 
-.ingredient {
-  margin-bottom: 1em;
-  box-shadow: 7px 4px 18px -1px $grey;
-  padding: 1em;
-  cursor: pointer;
-  outline: none;
+  mat-list {
+    margin: 1em auto;
+    max-width: 40em;
+  }
 
-  &:hover {
-    background-color: $grey;
+  .list-actions {
+    text-align: right;
+  }
+
+  .ingredient {
+    margin-bottom: 1em;
+    box-shadow: 7px 4px 18px -1px $grey;
+    cursor: pointer;
+    outline: none;
+    vertical-align: middle;
+
+    &:hover {
+      background-color: $grey;
+    }
   }
 }

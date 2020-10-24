@@ -22,7 +22,10 @@ export class RecipesService {
       .pipe(
         map((recipe: any) => {
           // TODO: move to server?
-          recipe.ingredients.forEach(i => i.unit.name = this.pluralizeUnit(i.unit.name, i.qty));
+          recipe.ingredients.forEach(i => {
+            i.details.name = i.details.name.toLowerCase();
+            i.unit.name = this.pluralizeUnit(i.unit.name, i.qty);
+          });
           return recipe;
         })
       );
