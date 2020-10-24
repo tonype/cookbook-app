@@ -1,0 +1,14 @@
+<header>
+  <h1 class="home" [routerLink]="['recipes']">Cookbook!</h1>
+  <nav>
+    <ul>
+      <li routerLink="recipes" routerLinkActive="active">Recipes</li>
+      <li routerLink="ingredients" routerLinkActive="active">Ingredients</li>
+      <li routerLink="units" routerLinkActive="active">Units</li>
+      <li routerLink="tags" routerLinkActive="active">Tags</li>
+    </ul>
+  </nav>
+</header>
+<div class="container">
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,19 @@
+.recipe-list {
+  margin: 0 auto;
+  max-width: 40em;
+}
+
+.recipe {
+  margin: 1em 0 0;
+  border: 0.25em black solid;
+  border-radius: 0.5rem;
+  cursor: pointer;
+
+  mat-card-title {
+    font-size: 2em;
+  }
+
+  .details {
+    margin: 1em;
+  }
+}

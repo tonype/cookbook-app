@@ -1,0 +1,8 @@
+<mat-list class="ingredient-list">
+  <mat-list-item class="ingredient"
+    *ngFor="let ingredient of ingredients | async"
+    [routerLink]="['./', ingredient._id]"
+  >
+    <p>{{ ingredient.name }}</p>
+  </mat-list-item>
+</mat-list>
