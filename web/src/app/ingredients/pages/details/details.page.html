@@ -1,7 +1,7 @@
 <section class="details">
   <header>
     <h2>{{originalIngredient.name}}</h2>
-    <button mat-raised-button color="warn">Delete</button>
+    <button mat-raised-button color="warn" (click)="confirmDelete()">Delete</button>
   </header>
   <form [formGroup]="ingredientDetailsForm" (submit)="save(ingredientDetailsForm.value)">
     <mat-form-field class="full-width-field" appearance="standard">

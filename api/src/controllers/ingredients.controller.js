@@ -48,10 +48,22 @@ const getIngredient = async (req, res, next) => {
 
 const updateIngredient = async (req, res, next) => {
     try {
-        const ingredient = await Ingredients.update(req.body);
-    
+        await Ingredients.update(req.body);
         debug(`ingredient with id of ${req.body.id} updated`);
-        res.json(ingredient);
+        res.end();
+    } catch (e) {
+        debug(e);
+        next(e);
+    }
+};
+
+const removeIngredient = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+
+        await Ingredients.remove(id);
+        debug(`ingredient with id of ${id} deleted`);
+        res.end();
     } catch (e) {
         debug(e);
         next(e);
@@ -62,5 +74,6 @@ router.get('/', listIngredients);
 router.post('/', createIngredient);
 router.get('/:id', getIngredient);
 router.put('/:id', updateIngredient);
+router.delete('/:id', removeIngredient);
 
 module.exports = router;

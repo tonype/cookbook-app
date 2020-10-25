@@ -22,4 +22,8 @@ export class IngredientsService {
   update(ingredient: any): Observable<any> {
     return this.http.put(`${this.rootUrl}/${ingredient.id}`, ingredient);
   }
+
+  delete(ingredientId: any): Observable<any> {
+    return this.http.delete(`${this.rootUrl}/${ingredientId}`);
+  }
 }
