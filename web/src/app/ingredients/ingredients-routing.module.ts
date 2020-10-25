@@ -11,6 +11,10 @@ const routes: Routes = [
     component: IngredientsListPage
   },
   {
+    path: 'new',
+    component: IngredientsDetailsPage
+  },
+  {
     path: ':id',
     component: IngredientsDetailsPage,
     resolve: {

@@ -19,6 +19,10 @@ export class IngredientsService {
     return this.http.get(`${this.rootUrl}/${id}`);
   }
 
+  create(ingredient: any): Observable<any> {
+    return this.http.post(`${this.rootUrl}`, ingredient);
+  }
+
   update(ingredient: any): Observable<any> {
     return this.http.put(`${this.rootUrl}/${ingredient.id}`, ingredient);
   }
