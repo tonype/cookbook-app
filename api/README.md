@@ -1,5 +1,5 @@
 # Cookbook API
-This is the Cookbook API Express server. It provides CRUD functionality for Recipes, Ingredients, and user provided Measurement Units. It uses MongoDB for data persistence.
+This is the Cookbook API Express server. It provides CRUD functionality for Recipes, Ingredients, user provided Measurement Units, and Tags. It uses MongoDB for data persistence.
 
 To run:
 - `npm install`

@@ -1,10 +1,10 @@
 'use strict';
 
-const db = require('../db');
+const mongoose = require('../db/mongoose');
 const cuid = require('cuid');
-const dbHooks = require('./db-hooks');
+const dbHooks = require('../db/hooks');
 
-const schema = new db.Schema({
+const schema = new mongoose.Schema({
     _id: { type: String, default: cuid },
     name: { 
         type: String,
@@ -15,10 +15,10 @@ const schema = new db.Schema({
 
 schema.post(
     'findOneAndDelete', 
-    async (document) => dbHooks.removeRecipeIngredientRelationship(document, 'ingredients.unit')
+    async (document) => dbHooks.removeRecipeRelationship(document, 'ingredients.unit')
 );
 
-const Unit = db.model('Unit', schema);
+const Unit = mongoose.model('Unit', schema);
 
 const get = async (_id) => await Unit.findById(_id);
 const create = async (unit) => await Unit.create(unit);

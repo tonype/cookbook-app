@@ -1,10 +1,10 @@
 'use strict';
 
-const db = require('../db');
+const mongoose = require('../db/mongoose');
 const cuid = require('cuid');
-const dbHooks = require('./db-hooks');
+const dbHooks = require('../db/hooks');
 
-const schema = new db.Schema({
+const schema = new mongoose.Schema({
     _id: { type: String, default: cuid },
     name: { 
         type: String,
@@ -13,16 +13,12 @@ const schema = new db.Schema({
     }
 });
 
-/**
- * Hooks
- * post - findOneAndDelete: remove all Recipe Ingredient associations upon Ingredient delete.
- */
 schema.post(
     'findOneAndDelete', 
-    async (document) => dbHooks.removeRecipeIngredientRelationship(document, 'ingredients.details')
+    async (document) => dbHooks.removeRecipeRelationship(document, 'ingredients.details')
 );
 
-const Ingredient = db.model('Ingredient', schema);
+const Ingredient = mongoose.model('Ingredient', schema);
 
 const get = async (_id) => await Ingredient.findById(_id);
 const create = async (ingredient) => await Ingredient.create(ingredient);

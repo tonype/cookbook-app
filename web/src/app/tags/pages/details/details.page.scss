@@ -1,0 +1,22 @@
+.details {
+  margin: 1em auto auto;
+  max-width: 60em;
+
+  header {
+    h2 {
+      display: inline-block;
+    }
+
+    button {
+      float: right;
+    }
+  }
+
+  .form-actions {
+    text-align: right;
+
+    .cancel {
+      margin-right: 1em;
+    }
+  }
+}

@@ -1,0 +1,27 @@
+$grey: rgba(219,204,219,0.66);
+
+.tag-list {
+  margin: 1em auto auto;
+  max-width: 60em;
+
+  mat-list {
+    margin: 1em auto;
+    max-width: 40em;
+  }
+
+  .list-actions {
+    text-align: right;
+  }
+
+  .tag {
+    margin-bottom: 1em;
+    box-shadow: 7px 4px 18px -1px $grey;
+    cursor: pointer;
+    outline: none;
+    vertical-align: middle;
+
+    &:hover {
+      background-color: $grey;
+    }
+  }
+}

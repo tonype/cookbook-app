@@ -1,9 +1,9 @@
 'use strict';
 
-const db = require('../db');
+const mongoose = require('../db/mongoose');
 const cuid = require('cuid');
 
-const Recipe = db.model('Recipe', {
+const Recipe = mongoose.model('Recipe', {
     _id: { type: String, default: cuid },
     name: { 
         type: String,
@@ -23,6 +23,13 @@ const Recipe = db.model('Recipe', {
     },
     foundFrom: String,
     notes: String,
+    tags: {
+        type: [{
+            type: String,
+            ref: 'Tag',
+            index: true
+        }]
+    },
     description: { 
         type: String,
         required: true
@@ -52,13 +59,17 @@ const Recipe = db.model('Recipe', {
 });
 
 const create = async (recipe) => await Recipe.create(recipe);
+
+// TODO: DRY up these populates.
 const list = async () => {
     return await Recipe.find({})
+        .populate('tags')
         .populate('ingredients.details')
         .populate('ingredients.unit');
 };
 const get = async (_id) => {
     return await Recipe.findById(_id)
+        .populate('tags')
         .populate('ingredients.details')
         .populate('ingredients.unit');
 };

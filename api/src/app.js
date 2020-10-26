@@ -22,6 +22,7 @@ app.use('/flash', controllers.flash);
 app.use('/recipes', controllers.recipes);
 app.use('/ingredients', controllers.ingredients);
 app.use('/units', controllers.units);
+app.use('/tags', controllers.tags);
 
 app.use(middleware.handleValidationError);
 app.use(middleware.handleError);

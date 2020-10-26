@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const debug = require('debug')('cookbook:units');
 
-const Units = require('../models/units');
+const Units = require('../models/units.model');
 
 const listUnits = async (req, res, next) => {
     try {

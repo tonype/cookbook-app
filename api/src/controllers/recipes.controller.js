@@ -3,7 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const debug = require('debug')('cookbook:recipes');
-const Recipes = require('../models/recipes');
+const Recipes = require('../models/recipes.model');
 
 const listRecipes = async (req, res, next) => {
     try {

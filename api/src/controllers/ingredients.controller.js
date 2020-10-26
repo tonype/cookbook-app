@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router();
 const debug = require('debug')('cookbook:ingredients');
 
-const Ingredients = require('../models/ingredients');
+const Ingredients = require('../models/ingredients.model');
 
 const listIngredients = async (req, res, next) => {
     try {
@@ -32,7 +32,7 @@ const getIngredient = async (req, res, next) => {
     try {
         const { id } = req.params;
         const ingredient = await Ingredients.get(id);
-    
+
         if (!ingredient) {
             debug(`ingredient with id of ${id} not found`);
             return next();

@@ -11,10 +11,14 @@ const routes: Routes = [
     component: TagsListPage
   },
   {
+    path: 'new',
+    component: TagsDetailsPage
+  },
+  {
     path: ':id',
     component: TagsDetailsPage,
     resolve: {
-      recipe: TagsResolver
+      tag: TagsResolver
     }
   }
 ];

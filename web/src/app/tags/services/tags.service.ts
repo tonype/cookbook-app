@@ -18,4 +18,16 @@ export class TagsService {
   get(id: string): Observable<any> {
     return this.http.get(`${this.rootUrl}/${id}`);
   }
+
+  create(tag: any): Observable<any> {
+    return this.http.post(`${this.rootUrl}`, tag);
+  }
+
+  update(tag: any): Observable<any> {
+    return this.http.put(`${this.rootUrl}/${tag.id}`, tag);
+  }
+
+  delete(tagId: any): Observable<any> {
+    return this.http.delete(`${this.rootUrl}/${tagId}`);
+  }
 }

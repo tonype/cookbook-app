@@ -1,0 +1,19 @@
+<section class="tag-list" *ngIf="tags">
+  <section class="list-actions">
+    <button class="add-tag" mat-fab color="primary" [routerLink]="['./new']">
+      <mat-icon>add</mat-icon>
+    </button>
+  </section>
+  <mat-list *ngIf="tags.length">
+    <mat-list-item class="tag"
+      *ngFor="let tag of tags"
+      [routerLink]="['./', tag._id]"
+    >
+      {{ tag.name }}
+    </mat-list-item>
+  </mat-list>
+
+  <h2 *ngIf="!tags.length">
+    There are no tags. Add some!
+  </h2>
+</section>
