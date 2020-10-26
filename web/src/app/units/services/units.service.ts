@@ -18,4 +18,16 @@ export class UnitsService {
   get(id: string): Observable<any> {
     return this.http.get(`${this.rootUrl}/${id}`);
   }
+
+  create(unit: any): Observable<any> {
+    return this.http.post(`${this.rootUrl}`, unit);
+  }
+
+  update(unit: any): Observable<any> {
+    return this.http.put(`${this.rootUrl}/${unit.id}`, unit);
+  }
+
+  delete(unitId: any): Observable<any> {
+    return this.http.delete(`${this.rootUrl}/${unitId}`);
+  }
 }

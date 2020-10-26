@@ -46,8 +46,34 @@ const createUnit = async (req, res, next) => {
     }
 };
 
+const updateUnit = async (req, res, next) => {
+    try {
+        await Units.update(req.body);
+        debug(`Unit with id of ${req.body.id} updated`);
+        res.end();
+    } catch (e) {
+        debug(e);
+        next(e);
+    }
+};
+
+const removeUnit = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+
+        await Units.remove(id);
+        debug(`Unit with id of ${id} deleted`);
+        res.end();
+    } catch (e) {
+        debug(e);
+        next(e);
+    }
+};
+
 router.get('/', listUnits);
 router.post('/', createUnit);
 router.get('/:id', getUnit);
+router.put('/:id', updateUnit);
+router.delete('/:id', removeUnit);
 
 module.exports = router;

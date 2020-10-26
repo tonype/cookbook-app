@@ -1,0 +1,37 @@
+<section class="details">
+  <header>
+    <h2>{{ mode === detailsMode.Edit ? originalUnit.name : 'New Unit' }}</h2>
+    <button mat-raised-button color="warn"
+      (click)="confirmDelete()"
+      *ngIf="mode === detailsMode.Edit"
+    >
+        Delete
+      </button>
+  </header>
+
+  <form [formGroup]="unitDetailsForm" (submit)="save(unitDetailsForm.value)">
+    <mat-form-field class="full-width-field" appearance="standard">
+      <mat-label>Unit name</mat-label>
+      <input matInput formControlName="name" required />
+      <mat-error *ngIf="unitDetailsForm.get('name').hasError('required')">
+        Unit name is required
+      </mat-error>
+    </mat-form-field>
+
+    <section class="form-actions">
+      <button class="cancel" type="button"
+        mat-raised-button
+        (click)="cancel()"
+      >
+        Cancel
+      </button>
+      <button class="update" type="submit" color="primary"
+        mat-raised-button
+        [disabled]="!unitDetailsForm.valid"
+      >
+        {{ mode === detailsMode.Edit ? 'Update' : 'Create' }}
+      </button>
+    </section>
+
+  </form>
+</section>

@@ -11,10 +11,14 @@ const routes: Routes = [
     component: UnitsListPage
   },
   {
+    path: 'new',
+    component: UnitsDetailsPage
+  },
+  {
     path: ':id',
     component: UnitsDetailsPage,
     resolve: {
-      recipe: UnitsResolver
+      unit: UnitsResolver
     }
   }
 ];

@@ -1,0 +1,19 @@
+<section class="unit-list" *ngIf="units">
+  <section class="list-actions">
+    <button class="add-unit" mat-fab color="primary" [routerLink]="['./new']">
+      <mat-icon>add</mat-icon>
+    </button>
+  </section>
+  <mat-list *ngIf="units.length">
+    <mat-list-item class="unit"
+      *ngFor="let unit of units"
+      [routerLink]="['./', unit._id]"
+    >
+      {{ unit.name }}
+    </mat-list-item>
+  </mat-list>
+
+  <h2 *ngIf="!units.length">
+    There are no units. Add some!
+  </h2>
+</section>

@@ -1,15 +1,19 @@
-<section class="ingredient-list">
+<section class="ingredient-list" *ngIf="ingredients">
   <section class="list-actions">
     <button class="add-ingredient" mat-fab color="primary" [routerLink]="['./new']">
       <mat-icon>add</mat-icon>
     </button>
   </section>
-  <mat-list>
+  <mat-list *ngIf="ingredients.length">
     <mat-list-item class="ingredient"
-      *ngFor="let ingredient of ingredients | async"
+      *ngFor="let ingredient of ingredients"
       [routerLink]="['./', ingredient._id]"
     >
       {{ ingredient.name }}
     </mat-list-item>
   </mat-list>
+
+  <h2 *ngIf="!ingredients.length">
+    There are no ingredients. Add some!
+  </h2>
 </section>

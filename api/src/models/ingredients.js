@@ -2,7 +2,7 @@
 
 const db = require('../db');
 const cuid = require('cuid');
-const Recipe = require('./recipes');
+const dbHooks = require('./db-hooks');
 
 const schema = new db.Schema({
     _id: { type: String, default: cuid },
@@ -17,17 +17,10 @@ const schema = new db.Schema({
  * Hooks
  * post - findOneAndDelete: remove all Recipe Ingredient associations upon Ingredient delete.
  */
-schema.post('findOneAndDelete', async (document) => {
-    const ingredientId = document._id;
-    const filter = { 'ingredients.details': ingredientId };
-    const update = { 
-        $pull: { 
-            ingredients: { details: ingredientId } 
-        } 
-    };
-
-    return await Recipe.model.updateMany(filter, update);
-});
+schema.post(
+    'findOneAndDelete', 
+    async (document) => dbHooks.removeRecipeIngredientRelationship(document, 'ingredients.details')
+);
 
 const Ingredient = db.model('Ingredient', schema);
 
