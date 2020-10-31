@@ -1,6 +1,6 @@
 <div class="recipe-list">
   <mat-card class="recipe"
-    *ngFor="let recipe of recipes | async"
+    *ngFor="let recipe of recipes"
     [routerLink]="['./', recipe._id]"
   >
     <mat-card-header>
@@ -12,4 +12,8 @@
       <p>{{ recipe.description }}</p>
     </mat-card-content>
   </mat-card>
+
+  <h2 *ngIf="!recipes.length">
+    There are no recipes. Add some!
+  </h2>
 </div>

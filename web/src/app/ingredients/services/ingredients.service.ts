@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Ingredient } from '@ingredients.models';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -11,23 +12,23 @@ export class IngredientsService {
 
   constructor(private http: HttpClient) {}
 
-  list(): Observable<any> {
-    return this.http.get(this.rootUrl);
+  list(): Observable<Ingredient[]> {
+    return this.http.get<Ingredient[]>(this.rootUrl);
   }
 
-  get(id: string): Observable<any> {
-    return this.http.get(`${this.rootUrl}/${id}`);
+  get(id: string): Observable<Ingredient> {
+    return this.http.get<Ingredient>(`${this.rootUrl}/${id}`);
   }
 
-  create(ingredient: any): Observable<any> {
-    return this.http.post(`${this.rootUrl}`, ingredient);
+  create(ingredient: Ingredient): Observable<Ingredient> {
+    return this.http.post<Ingredient>(`${this.rootUrl}`, ingredient);
   }
 
-  update(ingredient: any): Observable<any> {
-    return this.http.put(`${this.rootUrl}/${ingredient.id}`, ingredient);
+  update(ingredient: Ingredient): Observable<Ingredient> {
+    return this.http.put<Ingredient>(`${this.rootUrl}/${ingredient._id}`, ingredient);
   }
 
-  delete(ingredientId: any): Observable<any> {
-    return this.http.delete(`${this.rootUrl}/${ingredientId}`);
+  delete(ingredientId: string): Observable<Ingredient> {
+    return this.http.delete<Ingredient>(`${this.rootUrl}/${ingredientId}`);
   }
 }

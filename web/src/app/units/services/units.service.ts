@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { Unit } from '@units.models';
 
 @Injectable({
   providedIn: "root"
@@ -11,23 +12,23 @@ export class UnitsService {
 
   constructor(private http: HttpClient) {}
 
-  list(): Observable<any> {
-    return this.http.get(this.rootUrl);
+  list(): Observable<Unit[]> {
+    return this.http.get<Unit[]>(this.rootUrl);
   }
 
-  get(id: string): Observable<any> {
-    return this.http.get(`${this.rootUrl}/${id}`);
+  get(id: string): Observable<Unit> {
+    return this.http.get<Unit>(`${this.rootUrl}/${id}`);
   }
 
-  create(unit: any): Observable<any> {
-    return this.http.post(`${this.rootUrl}`, unit);
+  create(unit: Unit): Observable<Unit> {
+    return this.http.post<Unit>(`${this.rootUrl}`, unit);
   }
 
-  update(unit: any): Observable<any> {
-    return this.http.put(`${this.rootUrl}/${unit.id}`, unit);
+  update(unit: Unit): Observable<Unit> {
+    return this.http.put<Unit>(`${this.rootUrl}/${unit._id}`, unit);
   }
 
-  delete(unitId: any): Observable<any> {
-    return this.http.delete(`${this.rootUrl}/${unitId}`);
+  delete(unitId: string): Observable<Unit> {
+    return this.http.delete<Unit>(`${this.rootUrl}/${unitId}`);
   }
 }

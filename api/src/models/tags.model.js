@@ -25,7 +25,7 @@ const create = async (tag) => await Tag.create(tag);
 const list = async () => await Tag.find();
 const update = async (tag) => {
     return await Tag.replaceOne(
-        { _id: tag.id }, tag
+        { _id: tag._id }, tag
     );
 };
 const remove = async (id) => await Tag.findOneAndDelete({ _id: id });

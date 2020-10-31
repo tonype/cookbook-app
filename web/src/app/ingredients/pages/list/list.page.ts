@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Data } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { IngredientsService } from '../../services/ingredients.service';
+import { Ingredient } from '@ingredients.models';
 
 @UntilDestroy()
 @Component({
@@ -9,17 +10,17 @@ import { IngredientsService } from '../../services/ingredients.service';
   styleUrls: ['./list.page.scss']
 })
 export class IngredientsListPage implements OnInit {
-  ingredients: any[];
+  ingredients: Ingredient[];
 
-  constructor(private ingredientsService: IngredientsService) { }
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.ingredientsService.list()
+    this.route.data
       .pipe(
         untilDestroyed(this)
       )
-      .subscribe((ingredients) => {
-        this.ingredients = ingredients;
+      .subscribe((data: Data) => {
+        this.ingredients = data.ingredients;
       });
   }
 }

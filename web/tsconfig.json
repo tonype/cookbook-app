@@ -17,7 +17,13 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@recipes.models": ["src/app/recipes/models"],
+      "@ingredients.models": ["src/app/ingredients/models"],
+      "@tags.models": ["src/app/tags/models"],
+      "@units.models": ["src/app/units/models"]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

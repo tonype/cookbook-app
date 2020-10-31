@@ -4,6 +4,10 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+.home, li, mat-chip-list {
+  outline: none;
+}
+
 .full-width-field {
   width: 100%;
 }

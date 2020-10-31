@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { Observable } from 'rxjs';
 import { UnitsService } from '../units.service';
 import { Unit } from '@units.models';
@@ -7,12 +7,12 @@ import { Unit } from '@units.models';
 @Injectable({
   providedIn: 'root'
 })
-export class UnitsResolver implements Resolve<Unit[]> {
+export class UnitResolver implements Resolve<Unit> {
   constructor(
     private readonly unitsService: UnitsService,
   ) { }
 
-  resolve(): Observable<Unit[]> {
-    return this.unitsService.list();
+  resolve(route: ActivatedRouteSnapshot): Observable<Unit> {
+    return this.unitsService.get(route.params.id);
   }
 }

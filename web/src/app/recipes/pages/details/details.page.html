@@ -1,5 +1,17 @@
 <section class="details">
   <h2>{{ recipe.name }}</h2>
+  <section class="tags" *ngIf="recipe.tags.length">
+    <h3>Tags</h3>
+    <mat-chip-list aria-label="Tags">
+      <mat-chip *ngFor="let tag of recipe.tags" [disableRipple]="true">
+        {{ tag.name }}
+      </mat-chip>
+    </mat-chip-list>
+  </section>
+  <section class="notes" *ngIf="recipe.notes">
+    <h3>Notes</h3>
+    <div [innerHTML]="recipe.notes"></div>
+  </section>
   <section class="times">
     <article>
       <h3>Prep Time</h3>
@@ -14,7 +26,13 @@
       <div>{{ recipe.cookTime + recipe.prepTime }}</div>
     </article>
   </section>
-  <section class="description">
+  <section class="found-from" *ngIf="recipe.foundFrom">
+    <h3>Found From</h3>
+    <a [href]="recipe.foundFrom" target="_blank" rel="noopener">
+      {{ recipe.foundFrom }}
+    </a>
+  </section>
+  <section class="description" *ngIf="recipe.description">
     <h3>Description</h3>
     <div>{{ recipe.description }}</div>
   </section>

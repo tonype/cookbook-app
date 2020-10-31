@@ -4,11 +4,15 @@ import { Routes, RouterModule } from '@angular/router';
 import { UnitsListPage } from './pages/list/list.page';
 import { UnitsDetailsPage } from './pages/details/details.page';
 import { UnitsResolver } from './services/resolvers/units.resolver';
+import { UnitResolver } from './services/resolvers/unit.resolver';
 
 const routes: Routes = [
   {
     path: '',
-    component: UnitsListPage
+    component: UnitsListPage,
+    resolve: {
+      units: UnitsResolver
+    }
   },
   {
     path: 'new',
@@ -18,7 +22,7 @@ const routes: Routes = [
     path: ':id',
     component: UnitsDetailsPage,
     resolve: {
-      unit: UnitsResolver
+      unit: UnitResolver
     }
   }
 ];

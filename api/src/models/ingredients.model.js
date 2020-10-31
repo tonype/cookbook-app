@@ -25,7 +25,7 @@ const create = async (ingredient) => await Ingredient.create(ingredient);
 const list = async () => await Ingredient.find();
 const update = async (ingredient) => {
     return await Ingredient.replaceOne(
-        { _id: ingredient.id }, ingredient
+        { _id: ingredient._id }, ingredient
     );
 };
 const remove = async (id) => await Ingredient.findOneAndDelete({ _id: id });

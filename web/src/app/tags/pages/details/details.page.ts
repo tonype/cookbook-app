@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Data, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Tag } from '@tags.models';
 import { TagsService } from '../../services/tags.service';
 import { DetailsMode } from '../../../shared/enums/details-mode.enum';
 import { CookbookDialogConfirmDeleteComponent } from '../../../shared/components/dialog-confirm-delete.component';
@@ -17,7 +18,7 @@ import { CookbookDialogConfirmDeleteComponent } from '../../../shared/components
 export class TagsDetailsPage implements OnInit {
   mode: DetailsMode;
   detailsMode = DetailsMode;
-  originalTag: any;
+  originalTag: Tag;
   tagDetailsForm: FormGroup;
 
   constructor(
@@ -50,9 +51,9 @@ export class TagsDetailsPage implements OnInit {
       });
   }
 
-  save(tag: any): void {
+  save(tag: Tag): void {
     if (this.mode === DetailsMode.Edit) {
-      tag.id = this.originalTag._id;
+      tag._id = this.originalTag._id;
     }
 
     const saveOperation = this.mode === DetailsMode.Create ?

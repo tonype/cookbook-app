@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Data } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Recipe } from '@recipes.models';
 
 @UntilDestroy()
 @Component({
@@ -9,7 +10,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   styleUrls: ['./details.page.scss']
 })
 export class RecipeDetailsPage implements OnInit {
-  recipe: any;
+  recipe: Recipe;
 
   constructor(private route: ActivatedRoute) { }
 

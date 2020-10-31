@@ -3,12 +3,16 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { TagsListPage } from './pages/list/list.page';
 import { TagsDetailsPage } from './pages/details/details.page';
+import { TagResolver } from './services/resolvers/tag.resolver';
 import { TagsResolver } from './services/resolvers/tags.resolver';
 
 const routes: Routes = [
   {
     path: '',
-    component: TagsListPage
+    component: TagsListPage,
+    resolve: {
+      tags: TagsResolver
+    }
   },
   {
     path: 'new',
@@ -18,7 +22,7 @@ const routes: Routes = [
     path: ':id',
     component: TagsDetailsPage,
     resolve: {
-      tag: TagsResolver
+      tag: TagResolver
     }
   }
 ];

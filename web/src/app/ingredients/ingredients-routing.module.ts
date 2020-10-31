@@ -3,12 +3,16 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { IngredientsListPage } from './pages/list/list.page';
 import { IngredientsDetailsPage } from './pages/details/details.page';
+import { IngredientResolver } from './services/resolvers/ingredient.resolver';
 import { IngredientsResolver } from './services/resolvers/ingredients.resolver';
 
 const routes: Routes = [
   {
     path: '',
-    component: IngredientsListPage
+    component: IngredientsListPage,
+    resolve: {
+      ingredients: IngredientsResolver
+    }
   },
   {
     path: 'new',
@@ -18,7 +22,7 @@ const routes: Routes = [
     path: ':id',
     component: IngredientsDetailsPage,
     resolve: {
-      ingredient: IngredientsResolver
+      ingredient: IngredientResolver
     }
   }
 ];

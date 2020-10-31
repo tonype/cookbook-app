@@ -49,7 +49,7 @@ const getIngredient = async (req, res, next) => {
 const updateIngredient = async (req, res, next) => {
     try {
         await Ingredients.update(req.body);
-        debug(`ingredient with id of ${req.body.id} updated`);
+        debug(`ingredient with id of ${req.body._id} updated`);
         res.end();
     } catch (e) {
         debug(e);

@@ -25,7 +25,7 @@ const create = async (unit) => await Unit.create(unit);
 const list = async () => await Unit.find();
 const update = async (unit) => {
     return await Unit.replaceOne(
-        { _id: unit.id }, unit
+        { _id: unit._id }, unit
     );
 };
 const remove = async (id) => await Unit.findOneAndDelete({ _id: id });

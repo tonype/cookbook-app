@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Resolve } from '@angular/router';
+import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Tag } from '@tags.models';
 import { TagsService } from '../tags.service';
@@ -7,12 +7,12 @@ import { TagsService } from '../tags.service';
 @Injectable({
   providedIn: 'root'
 })
-export class TagsResolver implements Resolve<Tag[]> {
+export class TagResolver implements Resolve<Tag> {
   constructor(
     private readonly tagsService: TagsService,
   ) { }
 
-  resolve(): Observable<Tag[]> {
-    return this.tagsService.list();
+  resolve(route: ActivatedRouteSnapshot): Observable<Tag> {
+    return this.tagsService.get(route.params.id);
   }
 }

@@ -49,7 +49,7 @@ const createTag = async (req, res, next) => {
 const updateTag = async (req, res, next) => {
     try {
         await Tags.update(req.body);
-        debug(`Tag with id of ${req.body.id} updated`);
+        debug(`Tag with id of ${req.body._id} updated`);
         res.end();
     } catch (e) {
         debug(e);

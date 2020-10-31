@@ -49,7 +49,7 @@ const createUnit = async (req, res, next) => {
 const updateUnit = async (req, res, next) => {
     try {
         await Units.update(req.body);
-        debug(`Unit with id of ${req.body.id} updated`);
+        debug(`Unit with id of ${req.body._id} updated`);
         res.end();
     } catch (e) {
         debug(e);

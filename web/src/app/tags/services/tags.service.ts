@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { Tag } from '@tags.models';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -11,23 +12,23 @@ export class TagsService {
 
   constructor(private http: HttpClient) {}
 
-  list(): Observable<any> {
-    return this.http.get(this.rootUrl);
+  list(): Observable<Tag[]> {
+    return this.http.get<Tag[]>(this.rootUrl);
   }
 
-  get(id: string): Observable<any> {
-    return this.http.get(`${this.rootUrl}/${id}`);
+  get(id: string): Observable<Tag> {
+    return this.http.get<Tag>(`${this.rootUrl}/${id}`);
   }
 
-  create(tag: any): Observable<any> {
-    return this.http.post(`${this.rootUrl}`, tag);
+  create(tag: any): Observable<Tag> {
+    return this.http.post<Tag>(`${this.rootUrl}`, tag);
   }
 
-  update(tag: any): Observable<any> {
-    return this.http.put(`${this.rootUrl}/${tag.id}`, tag);
+  update(tag: any): Observable<Tag> {
+    return this.http.put<Tag>(`${this.rootUrl}/${tag.id}`, tag);
   }
 
-  delete(tagId: any): Observable<any> {
-    return this.http.delete(`${this.rootUrl}/${tagId}`);
+  delete(tagId: any): Observable<Tag> {
+    return this.http.delete<Tag>(`${this.rootUrl}/${tagId}`);
   }
 }

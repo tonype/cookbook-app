@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import * as pluralize from 'pluralize';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import * as pluralize from 'pluralize';
+import { map } from 'rxjs/operators';
+import { Recipe } from '@recipes.models';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -13,14 +14,14 @@ export class RecipesService {
 
   constructor(private http: HttpClient) {}
 
-  list(): Observable<any> {
-    return this.http.get(this.rootUrl);
+  list(): Observable<Recipe[]> {
+    return this.http.get<Recipe[]>(this.rootUrl);
   }
 
-  get(id: string): Observable<any> {
-    return this.http.get(`${this.rootUrl}/${id}`)
+  get(id: string): Observable<Recipe> {
+    return this.http.get<Recipe>(`${this.rootUrl}/${id}`)
       .pipe(
-        map((recipe: any) => {
+        map((recipe: Recipe) => {
           // TODO: move to server?
           recipe.ingredients.forEach(i => {
             i.details.name = i.details.name.toLowerCase();

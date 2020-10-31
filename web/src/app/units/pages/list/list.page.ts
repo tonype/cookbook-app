@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Data } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { UnitsService } from '../../services/units.service';
+import { Unit } from '@units.models';
 
 @UntilDestroy()
 @Component({
@@ -9,17 +10,17 @@ import { UnitsService } from '../../services/units.service';
   styleUrls: ['./list.page.scss']
 })
 export class UnitsListPage implements OnInit {
-  units: any[];
+  units: Unit[];
 
-  constructor(private unitsService: UnitsService) { }
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.unitsService.list()
-    .pipe(
-      untilDestroyed(this)
-    )
-    .subscribe((units) => {
-      this.units = units;
-    });
+    this.route.data
+      .pipe(
+        untilDestroyed(this)
+      )
+      .subscribe((data: Data) => {
+        this.units = data.units;
+      });
   }
 }
