@@ -5,8 +5,8 @@
       (click)="confirmDelete()"
       *ngIf="mode === detailsMode.Edit"
     >
-        Delete
-      </button>
+      Delete
+    </button>
   </header>
 
   <form [formGroup]="ingredientDetailsForm" (submit)="save(ingredientDetailsForm.value)">

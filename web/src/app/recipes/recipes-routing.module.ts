@@ -2,9 +2,12 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { RecipeListPage } from './pages/list/list.page';
-import { RecipeDetailsPage } from './pages/details/details.page';
+import { RecipeDetailsChangePage } from './pages/details/change/change.page';
+import { RecipeDetailsViewPage } from './pages/details/view/view.page';
 import { RecipeResolver } from './services/resolvers/recipe.resolver';
 import { RecipesResolver } from './services/resolvers/recipes.resolver';
+
+import { CanDeactivateGuard } from '@cookbook.shared/guards/can-deactivate.guard';
 
 const routes: Routes = [
   {
@@ -16,7 +19,15 @@ const routes: Routes = [
   },
   {
     path: ':id',
-    component: RecipeDetailsPage,
+    component: RecipeDetailsViewPage,
+    resolve: {
+      recipe: RecipeResolver
+    }
+  },
+  {
+    path: ':id/edit',
+    component: RecipeDetailsChangePage,
+    canDeactivate: [CanDeactivateGuard],
     resolve: {
       recipe: RecipeResolver
     }

@@ -27,6 +27,17 @@ const createRecipe = async (req, res, next) => {
     }
 };
 
+const updateRecipe = async (req, res, next) => {
+    try {
+        await Recipes.update(req.body);
+        debug(`Recipe with id of ${req.body._id} updated`);
+        res.end();
+    } catch (e) {
+        debug(e);
+        next(e);
+    }
+};
+
 const getRecipe = async (req, res, next) => {
     try {
         const { id } = req.params;
@@ -47,6 +58,7 @@ const getRecipe = async (req, res, next) => {
 
 router.get('/', listRecipes);
 router.post('/', createRecipe);
+router.post('/:id', updateRecipe);
 router.get('/:id', getRecipe);
 
 module.exports = router;

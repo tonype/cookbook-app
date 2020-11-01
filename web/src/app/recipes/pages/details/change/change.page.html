@@ -1,0 +1,99 @@
+<section class="details">
+  <form [formGroup]="recipeDetailsForm" (submit)="save(recipeDetailsForm.value)">
+    <section class="information">
+      <h2>Information</h2>
+      <button type="button" id="top-cancel" mat-raised-button (click)="cancel()">
+        Cancel
+      </button>
+      <section class="name">
+        <mat-form-field class="full-width-field" appearance="standard">
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name" required />
+          <mat-error *ngIf="recipeDetailsForm.get('name').hasError('required')">
+            Name is required
+          </mat-error>
+        </mat-form-field>
+      </section>
+      <article class="time">
+        <mat-form-field class="full-width-field" appearance="standard">
+          <mat-label>Prep Time (mins)</mat-label>
+          <input type="number" matInput formControlName="prepTime" required />
+          <mat-error *ngIf="recipeDetailsForm.get('prepTime').hasError('required')">
+            Prep Time is required
+          </mat-error>
+        </mat-form-field>
+      </article>
+      <article class="time">
+        <mat-form-field class="full-width-field" appearance="standard">
+          <mat-label>Cook Time (mins)</mat-label>
+          <input type="number" matInput formControlName="cookTime" required />
+          <mat-error *ngIf="recipeDetailsForm.get('cookTime').hasError('required')">
+            Cook Time is required
+          </mat-error>
+        </mat-form-field>
+      </article>
+    </section>
+    <section class="found-from">
+      <mat-form-field class="full-width-field" appearance="standard">
+        <mat-label>Found From</mat-label>
+        <input matInput formControlName="foundFrom" />
+      </mat-form-field>
+    </section>
+    <section class="notes">
+      <mat-form-field class="full-width-field" appearance="standard">
+        <mat-label>Notes</mat-label>
+        <textarea matInput formControlName="notes"></textarea>
+      </mat-form-field>
+    </section>
+    <section class="description">
+      <mat-form-field class="full-width-field" appearance="standard">
+        <mat-label>Description</mat-label>
+        <textarea matInput formControlName="description"></textarea>
+      </mat-form-field>
+    </section>
+    <section class="tags">
+      <h2>Tags</h2>
+      <mat-chip-list aria-label="Tags">
+        <mat-chip *ngFor="let tag of recipe.tags" [disableRipple]="true">
+          {{ tag.name }}
+        </mat-chip>
+      </mat-chip-list>
+    </section>
+    <section class="ingredients">
+      <h2>Ingredients</h2>
+      <ul>
+        <li *ngFor="let ingredient of recipe.ingredients">
+          {{ ingredient.qty }} {{ ingredient.unit.name }} {{ ingredient.details.name }}
+        </li>
+      </ul>
+    </section>
+    <section class="directions" formArrayName="directions">
+      <h2>Directions</h2>
+      <div *ngFor="let direction of directionFormArray.controls; let i = index;">
+        <ng-container [formGroupName]="i">
+          <mat-form-field class="full-width-field" appearance="standard">
+            <mat-label>Step {{ direction.value.step }}</mat-label>
+            <textarea matInput formControlName="detail" required></textarea>
+            <mat-error *ngIf="direction.get('detail').hasError('required')">
+              Direction detail is required
+            </mat-error>
+          </mat-form-field>
+        </ng-container>
+      </div>
+    </section>
+    <section class="form-actions">
+      <button class="cancel" type="button"
+        mat-raised-button
+        (click)="cancel()"
+      >
+        Cancel
+      </button>
+      <button class="update" type="submit" color="primary"
+        mat-raised-button
+        [disabled]="!recipeDetailsForm.valid"
+      >
+        Update
+      </button>
+    </section>
+  </form>
+</section>

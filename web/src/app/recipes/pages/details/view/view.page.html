@@ -1,43 +1,49 @@
 <section class="details">
-  <h2>{{ recipe.name }}</h2>
+  <h1>{{ recipe.name }}</h1>
+  <button mat-raised-button
+    color="primary"
+    (click)="edit()"
+  >
+    Edit
+  </button>
   <section class="tags" *ngIf="recipe.tags.length">
-    <h3>Tags</h3>
+    <h2>Tags</h2>
     <mat-chip-list aria-label="Tags">
       <mat-chip *ngFor="let tag of recipe.tags" [disableRipple]="true">
         {{ tag.name }}
       </mat-chip>
     </mat-chip-list>
   </section>
-  <section class="notes" *ngIf="recipe.notes">
-    <h3>Notes</h3>
-    <div [innerHTML]="recipe.notes"></div>
-  </section>
   <section class="times">
     <article>
-      <h3>Prep Time</h3>
+      <h2>Prep Time (mins)</h2>
       <div>{{ recipe.prepTime }}</div>
     </article>
     <article>
-      <h3>Cook Time</h3>
+      <h2>Cook Time (mins)</h2>
       <div>{{ recipe.cookTime }}</div>
     </article>
     <article>
-      <h3>Total Time</h3>
+      <h2>Total Time (mins)</h2>
       <div>{{ recipe.cookTime + recipe.prepTime }}</div>
     </article>
   </section>
   <section class="found-from" *ngIf="recipe.foundFrom">
-    <h3>Found From</h3>
+    <h2>Found From</h2>
     <a [href]="recipe.foundFrom" target="_blank" rel="noopener">
       {{ recipe.foundFrom }}
     </a>
   </section>
+  <section class="notes" *ngIf="recipe.notes">
+    <h2>Notes</h2>
+    <div [innerHTML]="recipe.notes"></div>
+  </section>
   <section class="description" *ngIf="recipe.description">
-    <h3>Description</h3>
+    <h2>Description</h2>
     <div>{{ recipe.description }}</div>
   </section>
   <section class="ingredients" *ngIf="recipe.ingredients">
-    <h3>Ingredients</h3>
+    <h2>Ingredients</h2>
     <ul>
       <li *ngFor="let ingredient of recipe.ingredients">
         {{ ingredient.qty }} {{ ingredient.unit.name }} {{ ingredient.details.name }}
@@ -45,7 +51,7 @@
     </ul>
   </section>
   <section class="directions" *ngIf="recipe.directions">
-    <h3>Directions</h3>
+    <h2>Directions</h2>
     <ol>
       <li *ngFor="let direction of recipe.directions">
         {{ direction.detail }}

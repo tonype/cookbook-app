@@ -1,0 +1,21 @@
+@import '../details';
+
+h2 {
+  display: inline-block;
+}
+
+textarea {
+  min-height: 5em;
+}
+
+#top-cancel {
+  float: right;
+}
+
+.form-actions {
+  text-align: right;
+
+  .cancel {
+    margin-right: 1em;
+  }
+}

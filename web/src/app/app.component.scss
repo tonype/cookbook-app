@@ -16,13 +16,19 @@ nav > ul {
   text-align: center;
 
   li {
-    margin-top: 0;
-    padding: 1rem;
+    margin: 0;
     display: inline-block;
     cursor: pointer;
 
-    &.active,
-    &:hover {
+    a {
+      display: inline-block;
+      padding: 1em;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    a.active,
+    a:hover {
       background-color: #fff;
       color: #000;
     }

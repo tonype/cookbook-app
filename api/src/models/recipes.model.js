@@ -59,6 +59,11 @@ const Recipe = mongoose.model('Recipe', {
 });
 
 const create = async (recipe) => await Recipe.create(recipe);
+const update = async (recipe) => {
+    return await Recipe.replaceOne(
+        { _id: recipe._id }, recipe
+    );
+};
 
 // TODO: DRY up these populates.
 const list = async () => {
@@ -76,6 +81,7 @@ const get = async (_id) => {
 
 module.exports = {
     create,
+    update,
     list,
     get,
     model: Recipe

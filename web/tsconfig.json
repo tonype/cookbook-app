@@ -19,6 +19,7 @@
       "dom"
     ],
     "paths": {
+      "@cookbook.shared/*": ["src/app/shared/*"],
       "@recipes.models": ["src/app/recipes/models"],
       "@ingredients.models": ["src/app/ingredients/models"],
       "@tags.models": ["src/app/tags/models"],

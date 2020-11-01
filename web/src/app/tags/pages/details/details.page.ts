@@ -6,8 +6,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Tag } from '@tags.models';
 import { TagsService } from '../../services/tags.service';
-import { DetailsMode } from '../../../shared/enums/details-mode.enum';
-import { CookbookDialogConfirmDeleteComponent } from '../../../shared/components/dialog-confirm-delete.component';
+import { DetailsMode } from '@cookbook.shared/enums/details-mode.enum';
+import { CookbookDialogConfirmDeleteComponent } from '@cookbook.shared/components/dialog-confirm-delete.component';
 
 @UntilDestroy()
 @Component({

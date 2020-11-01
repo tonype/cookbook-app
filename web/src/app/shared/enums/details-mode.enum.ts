@@ -1,4 +1,5 @@
 export enum DetailsMode {
   Create,
-  Edit
+  Edit,
+  View
 };
