@@ -10,7 +10,7 @@ export interface RecipeIngredient {
 }
 
 export interface RecipeDirection {
-  _id: string;
+  _id?: string;
   step: number;
   detail: string;
 }

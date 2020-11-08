@@ -8,11 +8,34 @@ textarea {
   min-height: 5em;
 }
 
-#top-cancel {
+.direction-action {
+  &.reorder {
+    cursor: move;
+  }
+
+  &.delete {
+    cursor: pointer;
+  }
+
+  min-width: 2em;
+  text-align: center;
+}
+
+#top-action {
   float: right;
 }
 
+.directions {
+  margin-top: 1em;
+}
+
+.direction {
+  display: flex;
+  align-items: center;
+}
+
 .form-actions {
+  float: right;
   text-align: right;
 
   .cancel {

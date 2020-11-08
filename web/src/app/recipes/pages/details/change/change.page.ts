@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { ActivatedRoute, Router, Data } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DetailsMode } from '@cookbook.shared/enums/details-mode.enum';
 import { CanComponentDeactivate } from '@cookbook.shared/interfaces/can-component-deactivate.interface';
 import { RecipesService } from '../../../services/recipes.service';
 import { Tag } from '@tags.models';
-import { Recipe, RecipeIngredient } from '@recipes.models';
+import { Recipe, RecipeDirection, RecipeIngredient } from '@recipes.models';
 import { Ingredient } from '@ingredients.models';
 import { Unit } from '@units.models';
 
@@ -67,6 +68,33 @@ export class RecipeDetailsChangePage implements OnInit, CanComponentDeactivate {
     return true;
   }
 
+  directionMoved(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.directionFormArray.controls, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.directionFormArray.value, event.previousIndex, event.currentIndex);
+    this.reorderDirections();
+  }
+
+  addDirection(direction: RecipeDirection): void {
+    this.directionFormArray.push(
+      this.fb.group({
+        step: [direction.step, Validators.required],
+        detail: [direction.detail, Validators.required]
+      })
+    );
+  }
+
+  removeDirection(index: number): void {
+    if (window.confirm('Are you sure you want to remove this direction?')) {
+      this.directionFormArray.removeAt(index);
+
+      if (this.recipeDetailsForm.pristine) {
+        this.recipeDetailsForm.markAsDirty();
+      }
+
+      this.reorderDirections();
+    }
+  };
+
   cancel(): void {
     this.router.navigate(['/recipes', this.recipe._id]);
   }
@@ -117,15 +145,6 @@ export class RecipeDetailsChangePage implements OnInit, CanComponentDeactivate {
     });
   }
 
-  private addDirection(direction: any): void {
-    this.directionFormArray.push(
-      this.fb.group({
-        step: [direction.step, Validators.required],
-        detail: [direction.detail, Validators.required]
-      })
-    );
-  }
-
   private addIngredient(ingredient: RecipeIngredient): void {
     this.ingredientFormArray.push(
       this.fb.group({
@@ -135,5 +154,11 @@ export class RecipeDetailsChangePage implements OnInit, CanComponentDeactivate {
         details: [ingredient.details]
       })
     );
+  }
+
+  private reorderDirections(): void {
+    this.directionFormArray.controls.forEach((direction, index) => {
+      direction.patchValue({ step: index + 1 });
+    });
   }
 }

@@ -2,9 +2,20 @@
   <form [formGroup]="recipeDetailsForm" (submit)="save(recipeDetailsForm.value)">
     <section class="information">
       <h2>Information</h2>
-      <button type="button" id="top-cancel" mat-raised-button (click)="cancel()">
-        Cancel
-      </button>
+      <span class="form-actions">
+        <button class="cancel" type="button"
+          mat-raised-button
+          (click)="cancel()"
+        >
+          Cancel
+        </button>
+        <button class="update" type="submit" color="primary"
+          mat-raised-button
+          [disabled]="!recipeDetailsForm.valid"
+        >
+          Update
+        </button>
+      </span>
       <section class="name">
         <mat-form-field class="full-width-field" appearance="standard">
           <mat-label>Name</mat-label>
@@ -69,16 +80,35 @@
     </section>
     <section class="directions" formArrayName="directions">
       <h2>Directions</h2>
-      <div *ngFor="let direction of directionFormArray.controls; let i = index;">
-        <ng-container [formGroupName]="i">
-          <mat-form-field class="full-width-field" appearance="standard">
-            <mat-label>Step {{ direction.value.step }}</mat-label>
-            <textarea matInput formControlName="detail" required></textarea>
-            <mat-error *ngIf="direction.get('detail').hasError('required')">
-              Direction detail is required
-            </mat-error>
-          </mat-form-field>
-        </ng-container>
+      <span class="form-actions">
+        <button
+          type="button"
+          class="add-direction"
+          mat-mini-fab
+          color="primary"
+          (click)="addDirection({ step: directionFormArray.controls.length + 1, detail: '' })"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+      </span>
+      <div
+        class="directions"
+        cdkDropList
+        (cdkDropListDropped)="directionMoved($event)"
+      >
+        <article class="direction" cdkDrag #elem="cdkDrag" *ngFor="let direction of directionFormArray.controls; let i = index;">
+          <ng-container [formGroupName]="i">
+            <mat-icon class="direction-action reorder" cdkDragHandle>reorder</mat-icon>
+            <mat-form-field class="full-width-field" appearance="standard">
+              <mat-label>Step {{ direction.value.step }}</mat-label>
+              <textarea matInput formControlName="detail" required></textarea>
+              <mat-error *ngIf="direction.get('detail').hasError('required')">
+                Direction detail is required
+              </mat-error>
+            </mat-form-field>
+            <mat-icon class="direction-action delete" (click)="removeDirection(i)">clear</mat-icon>
+          </ng-container>
+        </article>
       </div>
     </section>
     <section class="form-actions">

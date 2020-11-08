@@ -13,6 +13,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatChipsModule } from '@angular/material/chips';
 
+import { DragDropModule } from '@angular/cdk/drag-drop';
+
 const modules = [
   CommonModule,
   ReactiveFormsModule,
@@ -25,7 +27,8 @@ const modules = [
   MatSnackBarModule,
   MatIconModule,
   MatDialogModule,
-  MatChipsModule
+  MatChipsModule,
+  DragDropModule
 ];
 
 @NgModule({
