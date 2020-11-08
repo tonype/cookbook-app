@@ -64,9 +64,30 @@
     </section>
     <section class="tags">
       <h2>Tags</h2>
+      <section class="tags-typeahead">
+        <mat-form-field class="example-full-width">
+          <input type="text"
+                 placeholder="Search by Tag name"
+                 aria-label="Number"
+                 matInput
+                 [formControl]="tagTypeahead"
+                 [matAutocomplete]="auto">
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredTags | async" [value]="option">
+              {{ option }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </section>
       <mat-chip-list aria-label="Tags">
-        <mat-chip *ngFor="let tag of recipe.tags" [disableRipple]="true">
-          {{ tag.name }}
+        <mat-chip
+          *ngFor="let tag of tagsFormArray.controls; let i = index;"
+          [disableRipple]="true"
+          [removable]="true"
+          (removed)="removeTag(i)"
+        >
+          {{ tag.value.name }}
+          <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>
       </mat-chip-list>
     </section>
@@ -96,7 +117,7 @@
         cdkDropList
         (cdkDropListDropped)="directionMoved($event)"
       >
-        <article class="direction" cdkDrag #elem="cdkDrag" *ngFor="let direction of directionFormArray.controls; let i = index;">
+        <article class="direction" cdkDrag *ngFor="let direction of directionFormArray.controls; let i = index;">
           <ng-container [formGroupName]="i">
             <mat-icon class="direction-action reorder" cdkDragHandle>reorder</mat-icon>
             <mat-form-field class="full-width-field" appearance="standard">

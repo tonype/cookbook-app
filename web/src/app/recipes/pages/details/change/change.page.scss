@@ -8,6 +8,10 @@ textarea {
   min-height: 5em;
 }
 
+#top-action {
+  float: right;
+}
+
 .direction-action {
   &.reorder {
     cursor: move;
@@ -19,10 +23,6 @@ textarea {
 
   min-width: 2em;
   text-align: center;
-}
-
-#top-action {
-  float: right;
 }
 
 .directions {

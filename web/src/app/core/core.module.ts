@@ -12,6 +12,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
@@ -28,7 +29,8 @@ const modules = [
   MatIconModule,
   MatDialogModule,
   MatChipsModule,
-  DragDropModule
+  DragDropModule,
+  MatAutocompleteModule
 ];
 
 @NgModule({

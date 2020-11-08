@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router, Data } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { Observable } from 'rxjs';
+import { startWith, map } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DetailsMode } from '@cookbook.shared/enums/details-mode.enum';
 import { CanComponentDeactivate } from '@cookbook.shared/interfaces/can-component-deactivate.interface';
@@ -25,6 +27,9 @@ export class RecipeDetailsChangePage implements OnInit, CanComponentDeactivate {
 
   recipeDetailsForm: FormGroup;
 
+  tagTypeahead = new FormControl();
+  filteredTags: Observable<any[]>;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -41,6 +46,10 @@ export class RecipeDetailsChangePage implements OnInit, CanComponentDeactivate {
     return this.recipeDetailsForm.get('ingredients') as FormArray;
   }
 
+  get tagsFormArray(): FormArray {
+    return this.recipeDetailsForm.get('tags') as FormArray;
+  }
+
   ngOnInit(): void {
     this.route.data
       .pipe(
@@ -50,6 +59,14 @@ export class RecipeDetailsChangePage implements OnInit, CanComponentDeactivate {
         this.recipe = data.recipe;
         this.initializeRecipeForm();
       });
+
+    this.filteredTags = this.tagTypeahead.valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        return ['One', 'Two']
+          .filter(option => option.toLowerCase().indexOf(value.toLowerCase()) === 0);
+      })
+    );
   }
 
   canDeactivate(): boolean {
@@ -83,14 +100,16 @@ export class RecipeDetailsChangePage implements OnInit, CanComponentDeactivate {
     );
   }
 
+  removeTag(index: number): void {
+    if (window.confirm('Are you sure you want to remove this tag?')) {
+      this.tagsFormArray.removeAt(index);
+      this.markDirtyIfPristine();
+    }
+  }
+
   removeDirection(index: number): void {
     if (window.confirm('Are you sure you want to remove this direction?')) {
       this.directionFormArray.removeAt(index);
-
-      if (this.recipeDetailsForm.pristine) {
-        this.recipeDetailsForm.markAsDirty();
-      }
-
       this.reorderDirections();
     }
   };
@@ -160,5 +179,13 @@ export class RecipeDetailsChangePage implements OnInit, CanComponentDeactivate {
     this.directionFormArray.controls.forEach((direction, index) => {
       direction.patchValue({ step: index + 1 });
     });
+
+    this.markDirtyIfPristine();
+  }
+
+  private markDirtyIfPristine(): void {
+    if (this.recipeDetailsForm.pristine) {
+      this.recipeDetailsForm.markAsDirty();
+    }
   }
 }
