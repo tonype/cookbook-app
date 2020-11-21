@@ -23,7 +23,11 @@
       "@recipes.models": ["src/app/recipes/models"],
       "@ingredients.models": ["src/app/ingredients/models"],
       "@tags.models": ["src/app/tags/models"],
-      "@units.models": ["src/app/units/models"]
+      "@units.models": ["src/app/units/models"],
+      "@recipes.services": ["src/app/recipes/services"],
+      "@ingredients.services": ["src/app/ingredients/services"],
+      "@tags.services": ["src/app/tags/services"],
+      "@units.services": ["src/app/units/services"]
     }
   },
   "angularCompilerOptions": {

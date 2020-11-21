@@ -67,14 +67,15 @@
       <section class="tags-typeahead">
         <mat-form-field class="example-full-width">
           <input type="text"
-                 placeholder="Search by Tag name"
-                 aria-label="Number"
-                 matInput
-                 [formControl]="tagTypeahead"
-                 [matAutocomplete]="auto">
-          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-            <mat-option *ngFor="let option of filteredTags | async" [value]="option">
-              {{ option }}
+            placeholder="Search by Tag name"
+            aria-label="Number"
+            matInput
+            [formControl]="tagTypeahead"
+            (input)="searchTags()"
+            [matAutocomplete]="auto">
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="addTag($event)">
+            <mat-option *ngFor="let tag of tagSearchResults$ | async" [value]="tag">
+              {{ tag.name }}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
@@ -93,11 +94,18 @@
     </section>
     <section class="ingredients">
       <h2>Ingredients</h2>
-      <ul>
+      <!-- <mat-form-field class="full-width-field" appearance="standard">
+        <mat-label>Quantity</mat-label>
+        <input type="number" matInput formControlName="cookTime" required />
+        <mat-error *ngIf="recipeDetailsForm.get('cookTime').hasError('required')">
+          Cook Time is required
+        </mat-error>
+      </mat-form-field> -->
+      <!-- <ul>
         <li *ngFor="let ingredient of recipe.ingredients">
           {{ ingredient.qty }} {{ ingredient.unit.name }} {{ ingredient.details.name }}
         </li>
-      </ul>
+      </ul> -->
     </section>
     <section class="directions" formArrayName="directions">
       <h2>Directions</h2>

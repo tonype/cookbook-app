@@ -1,18 +1,30 @@
+/**
+ * TODOS:
+ * - Break this MVP beast up. an autocomplete component will help. Consider components by section?
+ * - Strive for readability without abstracting everything too much.
+ * - Fix the add icon for Directions. Something's misaligned.
+ */
+
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router, Data } from '@angular/router';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Observable } from 'rxjs';
-import { startWith, map } from 'rxjs/operators';
+import { Observable, Subject, of } from 'rxjs';
+import { debounceTime, switchMap, map } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+
 import { DetailsMode } from '@cookbook.shared/enums/details-mode.enum';
 import { CanComponentDeactivate } from '@cookbook.shared/interfaces/can-component-deactivate.interface';
 import { RecipesService } from '../../../services/recipes.service';
+
 import { Tag } from '@tags.models';
+import { TagsService } from '@tags.services';
 import { Recipe, RecipeDirection, RecipeIngredient } from '@recipes.models';
 import { Ingredient } from '@ingredients.models';
 import { Unit } from '@units.models';
+
 
 @UntilDestroy()
 @Component({
@@ -28,14 +40,22 @@ export class RecipeDetailsChangePage implements OnInit, CanComponentDeactivate {
   recipeDetailsForm: FormGroup;
 
   tagTypeahead = new FormControl();
-  filteredTags: Observable<any[]>;
+  searchTags$ = new Subject<string>();
+  tagSearchResults$: Observable<Tag[]> = this.searchTags$.pipe(
+    debounceTime(250),
+    switchMap(tagName => {
+      return tagName ? this.tagsService.list(tagName) : of([]);
+    }),
+    map((tags: Tag[]) => tags.filter((tag: Tag) => !this.recipeHasTag(tag)))
+  );
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
     private sb: MatSnackBar,
-    private recipesService: RecipesService
+    private recipesService: RecipesService,
+    private tagsService: TagsService
   ) {}
 
   get directionFormArray(): FormArray {
@@ -59,14 +79,23 @@ export class RecipeDetailsChangePage implements OnInit, CanComponentDeactivate {
         this.recipe = data.recipe;
         this.initializeRecipeForm();
       });
+  }
 
-    this.filteredTags = this.tagTypeahead.valueChanges.pipe(
-      startWith(''),
-      map(value => {
-        return ['One', 'Two']
-          .filter(option => option.toLowerCase().indexOf(value.toLowerCase()) === 0);
-      })
-    );
+  addTag(event: MatAutocompleteSelectedEvent): void {
+    const tag: Tag = event.option.value;
+
+    this.tagsFormArray.push(
+      this.fb.group({
+        _id: [tag._id],
+        name: [tag.name]
+    }));
+
+    this.tagTypeahead.setValue(null);
+    this.searchTags();
+  }
+
+  searchTags(): void {
+    this.searchTags$.next(this.tagTypeahead.value);
   }
 
   canDeactivate(): boolean {
@@ -74,9 +103,7 @@ export class RecipeDetailsChangePage implements OnInit, CanComponentDeactivate {
       const result = window.confirm('Are you sure you want to leave this page? Any unsaved changes will be lost.');
 
       if (result) {
-        this.sb.open('Recipe edit cancelled!', 'Dismiss', {
-          duration: 2000
-        });
+        this.sb.open('Recipe edit cancelled!', 'Dismiss', { duration: 2000 });
       }
 
       return result;
@@ -85,9 +112,8 @@ export class RecipeDetailsChangePage implements OnInit, CanComponentDeactivate {
     return true;
   }
 
-  directionMoved(event: CdkDragDrop<string[]>) {
+  directionMoved(event: CdkDragDrop<string[]>): void {
     moveItemInArray(this.directionFormArray.controls, event.previousIndex, event.currentIndex);
-    moveItemInArray(this.directionFormArray.value, event.previousIndex, event.currentIndex);
     this.reorderDirections();
   }
 
@@ -139,6 +165,10 @@ export class RecipeDetailsChangePage implements OnInit, CanComponentDeactivate {
 
         this.router.navigate(['/recipes', recipe._id]);
       });
+  }
+
+  private recipeHasTag(tag: Tag): boolean {
+    return !!(this.tagsFormArray.value as Tag[]).find((t: Tag) => t._id === tag._id);
   }
 
   private initializeRecipeForm(): void {

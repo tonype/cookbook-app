@@ -12,8 +12,11 @@ export class TagsService {
 
   constructor(private http: HttpClient) {}
 
-  list(): Observable<Tag[]> {
-    return this.http.get<Tag[]>(this.rootUrl);
+  list(name?: string): Observable<Tag[]> {
+    let url = this.rootUrl;
+    url += name ? `?name=${name}` : '';
+
+    return this.http.get<Tag[]>(url);
   }
 
   get(id: string): Observable<Tag> {

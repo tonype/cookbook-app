@@ -22,13 +22,19 @@ const Tag = mongoose.model('Tag', schema);
 
 const get = async (_id) => await Tag.findById(_id);
 const create = async (tag) => await Tag.create(tag);
-const list = async () => await Tag.find();
+const list = async (options = {}) => {
+    const { offset = 0, limit = 25, name } = options;
+    const query = name ? { name : { $regex: new RegExp(name, 'i') } } : {};
+    return await Tag.find(query)
+        .skip(offset)
+        .limit(limit);
+};
 const update = async (tag) => {
     return await Tag.replaceOne(
         { _id: tag._id }, tag
     );
 };
-const remove = async (id) => await Tag.findOneAndDelete({ _id: id });
+const remove = async (_id) => await Tag.findOneAndDelete({ _id });
 
 module.exports = {
     get,

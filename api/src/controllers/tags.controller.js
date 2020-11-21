@@ -8,8 +8,19 @@ const Tags = require('../models/tags.model');
 
 const listTags = async (req, res, next) => {
     try {
-        const tags = await Tags.list();
-        debug(`returning all tags. count: ${tags.length}`);
+        const { offset = 0, limit = 25, name } = req.query;
+        const tags = await Tags.list({
+            offset: +offset,
+            limit: +limit,
+            name
+        });
+
+        let logMsg = `returning tags with following criteria: offset ${offset}, limit ${limit}`;
+        logMsg += name ? `, name ${name}` : '';
+
+        debug(logMsg);
+        debug(`# of tags found: ${tags.length}`)
+
         res.json(tags);
     } catch(e) {
         debug(e);
