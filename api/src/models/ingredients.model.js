@@ -22,7 +22,13 @@ const Ingredient = mongoose.model('Ingredient', schema);
 
 const get = async (_id) => await Ingredient.findById(_id);
 const create = async (ingredient) => await Ingredient.create(ingredient);
-const list = async () => await Ingredient.find();
+const list = async (options = {}) => {
+    const { offset = 0, limit = 25, name } = options;
+    const query = name ? { name : { $regex: new RegExp(name, 'i') } } : {};
+    return await Ingredient.find(query)
+        .skip(offset)
+        .limit(limit);
+};
 const update = async (ingredient) => {
     return await Ingredient.replaceOne(
         { _id: ingredient._id }, ingredient

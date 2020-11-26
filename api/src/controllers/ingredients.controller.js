@@ -8,8 +8,19 @@ const Ingredients = require('../models/ingredients.model');
 
 const listIngredients = async (req, res, next) => {
     try {
-        const ingredients = await Ingredients.list();
-        debug(`returning all ingredients. count: ${ingredients.length}`);
+        const { offset = 0, limit = 25, name } = req.query;
+        const ingredients = await Ingredients.list({
+            offset: +offset,
+            limit: +limit,
+            name
+        });
+
+        let logMsg = `returning ingredients with following criteria: offset ${offset}, limit ${limit}`;
+        logMsg += name ? `, name ${name}` : '';
+    
+        debug(logMsg);
+        debug(`# of ingredients found: ${ingredients.length}`)
+    
         res.json(ingredients);
     } catch(e) {
         debug(e);

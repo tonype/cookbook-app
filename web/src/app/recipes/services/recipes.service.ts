@@ -21,17 +21,17 @@ export class RecipesService {
   }
 
   get(id: string): Observable<Recipe> {
-    return this.http.get<Recipe>(`${this.rootUrl}/${id}`)
-      .pipe(
-        map((recipe: Recipe) => {
-          // TODO: move to server?
-          recipe.ingredients.forEach((i: RecipeIngredient) => {
-            (i.details as Ingredient).name = (i.details as Ingredient).name.toLowerCase();
-            (i.unit as Unit).name = this.pluralizeUnit((i.unit as Unit).name, i.qty);
-          });
-          return recipe;
-        })
-      );
+    return this.http.get<Recipe>(`${this.rootUrl}/${id}`);
+      // .pipe(
+      //   map((recipe: Recipe) => {
+      //     // TODO: move to server?
+      //     recipe.ingredients.forEach((i: RecipeIngredient) => {
+      //       // TODO: why lowercase here??
+      //       // (i.details as Ingredient).name = (i.details as Ingredient).name.toLowerCase();
+      //     });
+      //     return recipe;
+      //   })
+      // );
   }
 
   update(recipe: Recipe): Observable<Recipe> {

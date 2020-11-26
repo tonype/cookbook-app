@@ -12,7 +12,17 @@ textarea {
   float: right;
 }
 
-.direction-action {
+.add-ingredient > mat-form-field {
+  margin-right: 1rem;
+}
+
+.ingredients {
+  .info {
+    vertical-align: super;
+  }
+}
+
+.action {
   &.reorder {
     cursor: move;
   }

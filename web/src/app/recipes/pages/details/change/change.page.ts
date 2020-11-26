@@ -11,9 +11,11 @@ import { ActivatedRoute, Router, Data } from '@angular/router';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Observable, Subject, of } from 'rxjs';
+import { Observable, Subject, BehaviorSubject, of } from 'rxjs';
 import { debounceTime, switchMap, map } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import numericQuantity from 'numeric-quantity';
+import * as pluralize from 'pluralize';
 
 import { DetailsMode } from '@cookbook.shared/enums/details-mode.enum';
 import { CanComponentDeactivate } from '@cookbook.shared/interfaces/can-component-deactivate.interface';
@@ -21,10 +23,11 @@ import { RecipesService } from '../../../services/recipes.service';
 
 import { Tag } from '@tags.models';
 import { TagsService } from '@tags.services';
+import { IngredientsService } from '@ingredients.services';
+import { UnitsService } from '@units.services';
 import { Recipe, RecipeDirection, RecipeIngredient } from '@recipes.models';
 import { Ingredient } from '@ingredients.models';
 import { Unit } from '@units.models';
-
 
 @UntilDestroy()
 @Component({
@@ -38,6 +41,7 @@ export class RecipeDetailsChangePage implements OnInit, CanComponentDeactivate {
   detailsMode = DetailsMode;
 
   recipeDetailsForm: FormGroup;
+  addIngredientForm: FormGroup;
 
   tagTypeahead = new FormControl();
   searchTags$ = new Subject<string>();
@@ -49,20 +53,40 @@ export class RecipeDetailsChangePage implements OnInit, CanComponentDeactivate {
     map((tags: Tag[]) => tags.filter((tag: Tag) => !this.recipeHasTag(tag)))
   );
 
+  searchIngredients$ = new BehaviorSubject<string>(null);
+  ingredientSearchResults$: Observable<Tag[]> = this.searchIngredients$.pipe(
+    debounceTime(250),
+    switchMap(ingredientName => {
+      return ingredientName ? this.ingredientsService.list(ingredientName) : of([]);
+    })
+    // map((tags: Tag[]) => tags.filter((tag: Tag) => !this.recipeHasTag(tag)))
+  );
+
+  searchUnits$ = new BehaviorSubject<string>(null);
+  unitSearchResults$: Observable<Tag[]> = this.searchUnits$.pipe(
+    debounceTime(250),
+    switchMap(unitName => {
+      return unitName ? this.unitsService.list(unitName) : of([]);
+    })
+    // map((tags: Tag[]) => tags.filter((tag: Tag) => !this.recipeHasTag(tag)))
+  );
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
     private sb: MatSnackBar,
     private recipesService: RecipesService,
-    private tagsService: TagsService
+    private tagsService: TagsService,
+    private ingredientsService: IngredientsService,
+    private unitsService: UnitsService,
   ) {}
 
-  get directionFormArray(): FormArray {
+  get directionsFormArray(): FormArray {
     return this.recipeDetailsForm.get('directions') as FormArray;
   }
 
-  get ingredientFormArray(): FormArray {
+  get ingredientsFormArray(): FormArray {
     return this.recipeDetailsForm.get('ingredients') as FormArray;
   }
 
@@ -98,6 +122,22 @@ export class RecipeDetailsChangePage implements OnInit, CanComponentDeactivate {
     this.searchTags$.next(this.tagTypeahead.value);
   }
 
+  searchIngredients(name: string): void {
+    this.searchIngredients$.next(name);
+  }
+
+  ingredientDisplay(ingredient: Ingredient): string {
+    return ingredient ? ingredient.name : null;
+  }
+
+  searchUnits(name: string): void {
+    this.searchUnits$.next(name);
+  }
+
+  unitDisplay(unit: Unit): string {
+    return unit ? unit.name : null;
+  }
+
   canDeactivate(): boolean {
     if (this.recipeDetailsForm.dirty || this.recipeDetailsForm.touched) {
       const result = window.confirm('Are you sure you want to leave this page? Any unsaved changes will be lost.');
@@ -113,17 +153,29 @@ export class RecipeDetailsChangePage implements OnInit, CanComponentDeactivate {
   }
 
   directionMoved(event: CdkDragDrop<string[]>): void {
-    moveItemInArray(this.directionFormArray.controls, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.directionsFormArray.controls, event.previousIndex, event.currentIndex);
     this.reorderDirections();
   }
 
   addDirection(direction: RecipeDirection): void {
-    this.directionFormArray.push(
+    this.directionsFormArray.push(
       this.fb.group({
         step: [direction.step, Validators.required],
         detail: [direction.detail, Validators.required]
       })
     );
+  }
+
+  addRecipeIngredient(ingredient: RecipeIngredient): void {
+    this.ingredientsFormArray.push(
+      this.fb.group({
+        qty: [ingredient.qty, Validators.required],
+        unit: [ingredient.unit, Validators.required],
+        details: [ingredient.details, Validators.required]
+      })
+    );
+
+    this.resetAddIngredientForm();
   }
 
   removeTag(index: number): void {
@@ -135,8 +187,14 @@ export class RecipeDetailsChangePage implements OnInit, CanComponentDeactivate {
 
   removeDirection(index: number): void {
     if (window.confirm('Are you sure you want to remove this direction?')) {
-      this.directionFormArray.removeAt(index);
+      this.directionsFormArray.removeAt(index);
       this.reorderDirections();
+    }
+  };
+
+  removeIngredient(index: number): void {
+    if (window.confirm('Are you sure you want to remove this ingredient?')) {
+      this.ingredientsFormArray.removeAt(index);
     }
   };
 
@@ -167,6 +225,17 @@ export class RecipeDetailsChangePage implements OnInit, CanComponentDeactivate {
       });
   }
 
+  // TODO: make this a pipe
+  getPluralizedUnit(ingredient: RecipeIngredient): void {
+    const unit = (ingredient.unit as Unit);
+
+    if (!unit.name) {
+      return;
+    }
+
+    return numericQuantity(ingredient.qty) > 1 ? pluralize(unit.name) : unit.name;
+  }
+
   private recipeHasTag(tag: Tag): boolean {
     return !!(this.tagsFormArray.value as Tag[]).find((t: Tag) => t._id === tag._id);
   }
@@ -185,6 +254,8 @@ export class RecipeDetailsChangePage implements OnInit, CanComponentDeactivate {
       directions: this.fb.array([], Validators.minLength(1))
     });
 
+    this.resetAddIngredientForm();
+
     this.recipe.directions.forEach(direction => {
       this.addDirection(direction);
     });
@@ -194,8 +265,16 @@ export class RecipeDetailsChangePage implements OnInit, CanComponentDeactivate {
     });
   }
 
+  private resetAddIngredientForm(): void {
+    this.addIngredientForm = this.fb.group({
+      qty: [1, Validators.required],
+      unit: [null, Validators.required],
+      details: [null, Validators.required],
+    });
+  }
+
   private addIngredient(ingredient: RecipeIngredient): void {
-    this.ingredientFormArray.push(
+    this.ingredientsFormArray.push(
       this.fb.group({
         _id: [ingredient._id],
         qty: [ingredient.qty],
@@ -206,7 +285,7 @@ export class RecipeDetailsChangePage implements OnInit, CanComponentDeactivate {
   }
 
   private reorderDirections(): void {
-    this.directionFormArray.controls.forEach((direction, index) => {
+    this.directionsFormArray.controls.forEach((direction, index) => {
       direction.patchValue({ step: index + 1 });
     });
 

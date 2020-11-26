@@ -46,7 +46,7 @@
     <h2>Ingredients</h2>
     <ul>
       <li *ngFor="let ingredient of recipe.ingredients">
-        {{ ingredient.qty }} {{ ingredient.unit.name }} {{ ingredient.details.name }}
+        {{ ingredient.qty }} {{ getPluralizedUnit(ingredient) }} {{ ingredient.details.name }}
       </li>
     </ul>
   </section>

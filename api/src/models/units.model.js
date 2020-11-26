@@ -22,7 +22,13 @@ const Unit = mongoose.model('Unit', schema);
 
 const get = async (_id) => await Unit.findById(_id);
 const create = async (unit) => await Unit.create(unit);
-const list = async () => await Unit.find();
+const list = async (options = {}) => {
+    const { offset = 0, limit = 25, name } = options;
+    const query = name ? { name : { $regex: new RegExp(name, 'i') } } : {};
+    return await Unit.find(query)
+        .skip(offset)
+        .limit(limit);
+};
 const update = async (unit) => {
     return await Unit.replaceOne(
         { _id: unit._id }, unit

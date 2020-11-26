@@ -12,8 +12,11 @@ export class IngredientsService {
 
   constructor(private http: HttpClient) {}
 
-  list(): Observable<Ingredient[]> {
-    return this.http.get<Ingredient[]>(this.rootUrl);
+  list(name?: string): Observable<Ingredient[]> {
+    let url = this.rootUrl;
+    url += name ? `?name=${name}` : '';
+
+    return this.http.get<Ingredient[]>(url);
   }
 
   get(id: string): Observable<Ingredient> {

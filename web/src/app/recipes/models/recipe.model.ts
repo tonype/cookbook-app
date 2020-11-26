@@ -3,8 +3,8 @@ import { Tag } from '@tags.models';
 import { Unit } from '@units.models';
 
 export interface RecipeIngredient {
-  _id: string;
-  qty: number;
+  _id?: string;
+  qty: string;
   unit: Unit | string;
   details: Ingredient | string;
 }

@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router, Data } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Recipe } from '@recipes.models';
+import * as pluralize from 'pluralize';
+import numericQuantity from 'numeric-quantity';
+import { Recipe, RecipeIngredient } from '@recipes.models';
+import { Unit } from '@units.models';
 
 @UntilDestroy()
 @Component({
@@ -29,5 +32,11 @@ export class RecipeDetailsViewPage {
 
   edit(): void {
     this.router.navigate(['/recipes', this.recipe._id, 'edit']);
+  }
+
+  // TODO: make this a pipe
+  getPluralizedUnit(ingredient: RecipeIngredient): void {
+    const unit = (ingredient.unit as Unit);
+    return numericQuantity(ingredient.qty) > 1 ? pluralize(unit.name) : unit.name;
   }
 }

@@ -10,6 +10,14 @@
       <p>Prep time: {{ recipe.prepTime }} minutes</p>
       <p>Cook time: {{ recipe.cookTime }} minutes</p>
       <p>{{ recipe.description }}</p>
+      <mat-chip-list aria-label="Tags" *ngIf="recipe.tags.length">
+        <mat-chip
+          *ngFor="let tag of recipe.tags; let i = index;"
+          [disableRipple]="true"
+        >
+          {{ tag.name }}
+        </mat-chip>
+      </mat-chip-list>
     </mat-card-content>
   </mat-card>
 

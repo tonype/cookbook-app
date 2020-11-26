@@ -8,8 +8,19 @@ const Units = require('../models/units.model');
 
 const listUnits = async (req, res, next) => {
     try {
-        const units = await Units.list();
-        debug(`returning all units. count: ${units.length}`);
+        const { offset = 0, limit = 25, name } = req.query;
+        const units = await Units.list({
+            offset: +offset,
+            limit: +limit,
+            name
+        });
+
+        let logMsg = `returning units with following criteria: offset ${offset}, limit ${limit}`;
+        logMsg += name ? `, name ${name}` : '';
+    
+        debug(logMsg);
+        debug(`# of units found: ${units.length}`)
+    
         res.json(units);
     } catch(e) {
         debug(e);

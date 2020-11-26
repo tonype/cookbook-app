@@ -12,8 +12,11 @@ export class UnitsService {
 
   constructor(private http: HttpClient) {}
 
-  list(): Observable<Unit[]> {
-    return this.http.get<Unit[]>(this.rootUrl);
+  list(name?: string): Observable<Unit[]> {
+    let url = this.rootUrl;
+    url += name ? `?name=${name}` : '';
+
+    return this.http.get<Unit[]>(url);
   }
 
   get(id: string): Observable<Unit> {

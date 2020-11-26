@@ -65,15 +65,15 @@
     <section class="tags">
       <h2>Tags</h2>
       <section class="tags-typeahead">
-        <mat-form-field class="example-full-width">
+        <mat-form-field>
           <input type="text"
             placeholder="Search by Tag name"
-            aria-label="Number"
+            aria-label="Search by Tag name"
             matInput
             [formControl]="tagTypeahead"
             (input)="searchTags()"
-            [matAutocomplete]="auto">
-          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="addTag($event)">
+            [matAutocomplete]="tagAutocomplete">
+          <mat-autocomplete autoActiveFirstOption #tagAutocomplete="matAutocomplete" (optionSelected)="addTag($event)">
             <mat-option *ngFor="let tag of tagSearchResults$ | async" [value]="tag">
               {{ tag.name }}
             </mat-option>
@@ -92,20 +92,76 @@
         </mat-chip>
       </mat-chip-list>
     </section>
-    <section class="ingredients">
+    <section class="ingredients" formArrayName="ingredients">
       <h2>Ingredients</h2>
-      <!-- <mat-form-field class="full-width-field" appearance="standard">
-        <mat-label>Quantity</mat-label>
-        <input type="number" matInput formControlName="cookTime" required />
-        <mat-error *ngIf="recipeDetailsForm.get('cookTime').hasError('required')">
-          Cook Time is required
-        </mat-error>
-      </mat-form-field> -->
-      <!-- <ul>
-        <li *ngFor="let ingredient of recipe.ingredients">
-          {{ ingredient.qty }} {{ ingredient.unit.name }} {{ ingredient.details.name }}
-        </li>
-      </ul> -->
+      <form class="add-ingredient" [formGroup]="addIngredientForm" (submit)="addRecipeIngredient(addIngredientForm.value)">
+        <mat-form-field appearance="standard">
+          <mat-label>Quantity</mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="qty"
+            required />
+          <mat-error *ngIf="addIngredientForm.get('qty').hasError('required')">
+            Quantity is required
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <mat-label>Unit</mat-label>
+          <input type="text"
+            placeholder="Unit"
+            aria-label="Unit"
+            matInput
+            formControlName="unit"
+            [matAutocomplete]="unitAutocomplete"
+            (input)="searchUnits(addIngredientForm.get('unit').value)"
+            required />
+            <mat-error *ngIf="addIngredientForm.get('unit').hasError('required')">
+              Unit is required
+            </mat-error>
+          <mat-autocomplete autoActiveFirstOption #unitAutocomplete="matAutocomplete" [displayWith]="unitDisplay">
+            <mat-option *ngFor="let unitResult of unitSearchResults$ | async" [value]="unitResult">
+              {{ unitResult.name }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <mat-label>Ingredient</mat-label>
+          <input type="text"
+            placeholder="Ingredient"
+            aria-label="Ingredient"
+            matInput
+            formControlName="details"
+            [matAutocomplete]="ingredientAutocomplete"
+            (input)="searchIngredients(addIngredientForm.get('details').value)"
+            required />
+            <mat-error *ngIf="addIngredientForm.get('details').hasError('required')">
+              Ingredient is required
+            </mat-error>
+          <mat-autocomplete autoActiveFirstOption #ingredientAutocomplete="matAutocomplete" [displayWith]="ingredientDisplay">
+            <mat-option *ngFor="let ingredientResult of ingredientSearchResults$ | async" [value]="ingredientResult">
+              {{ ingredientResult.name }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <button
+          type="submit"
+          class="add-ingredient"
+          mat-mini-fab
+          color="primary"
+          [disabled]="!addIngredientForm.valid"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+      </form>
+      <div *ngFor="let ingredient of ingredientsFormArray.controls; let i = index;">
+        <ng-container [formGroupName]="i">
+          <mat-icon class="action delete" (click)="removeIngredient(i)">clear</mat-icon>
+          <span class="info">
+            {{ ingredient.value.qty }} {{ getPluralizedUnit(ingredient.value) }} {{ ingredient.value.details.name }}
+          </span>
+        </ng-container>
+      </div>
     </section>
     <section class="directions" formArrayName="directions">
       <h2>Directions</h2>
@@ -115,7 +171,7 @@
           class="add-direction"
           mat-mini-fab
           color="primary"
-          (click)="addDirection({ step: directionFormArray.controls.length + 1, detail: '' })"
+          (click)="addDirection({ step: directionsFormArray.controls.length + 1, detail: '' })"
         >
           <mat-icon>add</mat-icon>
         </button>
@@ -125,9 +181,9 @@
         cdkDropList
         (cdkDropListDropped)="directionMoved($event)"
       >
-        <article class="direction" cdkDrag *ngFor="let direction of directionFormArray.controls; let i = index;">
+        <article class="direction" cdkDrag *ngFor="let direction of directionsFormArray.controls; let i = index;">
           <ng-container [formGroupName]="i">
-            <mat-icon class="direction-action reorder" cdkDragHandle>reorder</mat-icon>
+            <mat-icon class="action reorder" cdkDragHandle>reorder</mat-icon>
             <mat-form-field class="full-width-field" appearance="standard">
               <mat-label>Step {{ direction.value.step }}</mat-label>
               <textarea matInput formControlName="detail" required></textarea>
@@ -135,7 +191,7 @@
                 Direction detail is required
               </mat-error>
             </mat-form-field>
-            <mat-icon class="direction-action delete" (click)="removeDirection(i)">clear</mat-icon>
+            <mat-icon class="action delete" (click)="removeDirection(i)">clear</mat-icon>
           </ng-container>
         </article>
       </div>

@@ -36,7 +36,7 @@ const Recipe = mongoose.model('Recipe', {
     },
     ingredients: {
         type: [{
-            qty: { type: Number, required: true },
+            qty: { type: String, required: true },
             unit: { 
                 type: String,
                 ref: 'Unit',
