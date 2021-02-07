@@ -5,13 +5,18 @@ import { RecipesRoutingModule } from './recipes-routing.module';
 
 import { RecipeListPage } from './pages/list/list.page';
 import { RecipeDetailsViewPage } from './pages/details/view/view.page';
-import { RecipeDetailsChangePage } from './pages/details/change/change.page';
+import { RecipeDetailsEditPage } from './pages/details/edit/edit.page';
+import { RecipeDetailsAddPage } from './pages/details/add/add.page';
+
+import { RecipeFormComponent } from './components/recipe-form.component';
 
 @NgModule({
   declarations: [
     RecipeListPage,
     RecipeDetailsViewPage,
-    RecipeDetailsChangePage
+    RecipeDetailsEditPage,
+    RecipeDetailsAddPage,
+    RecipeFormComponent
   ],
   imports: [
     CoreModule,

@@ -58,7 +58,7 @@ const getRecipe = async (req, res, next) => {
 
 router.get('/', listRecipes);
 router.post('/', createRecipe);
-router.post('/:id', updateRecipe);
+router.put('/:id', updateRecipe);
 router.get('/:id', getRecipe);
 
 module.exports = router;

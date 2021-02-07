@@ -35,10 +35,10 @@ export class RecipesService {
   }
 
   update(recipe: Recipe): Observable<Recipe> {
-    return this.http.post<Recipe>(`${this.rootUrl}/${recipe._id}`, recipe);
+    return this.http.put<Recipe>(`${this.rootUrl}/${recipe._id}`, recipe);
   }
 
-  private pluralizeUnit(unitName: string, qty: number): string {
-    return pluralize(unitName, qty);
+  create(recipe: Recipe): Observable<Recipe> {
+    return this.http.post<Recipe>(`${this.rootUrl}`, recipe);
   }
 }

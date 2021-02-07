@@ -1,7 +1,23 @@
-@import '../details';
+section {
+    margin-bottom: 1em;
+}
+
+h1 {
+    display: inline-block;
+}
 
 h2 {
-  display: inline-block;
+    display: inline-block;
+}
+
+.details {
+    margin: 1em auto auto;
+    max-width: 60em;
+
+    .times {
+        display: flex;
+        justify-content: space-between;
+    }
 }
 
 textarea {

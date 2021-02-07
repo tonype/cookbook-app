@@ -1,20 +1,30 @@
-.recipe-list {
-  margin: 0 auto;
-  max-width: 48em;
+.recipes {
+  margin: 1em auto auto;
+  max-width: 60em;
+
+  .list-actions {
+    text-align: right;
+  }
+  
+  .recipe-list {
+    margin: 0 auto;
+    max-width: 40em;
+    
+    .recipe {
+      margin: 1em 0 0;
+      border: 0.25em black solid;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      outline: none;
+    
+      mat-card-title {
+        font-size: 2em;
+      }
+    
+      .details {
+        margin: 1em;
+      }
+    }
+  }
 }
 
-.recipe {
-  margin: 1em 0 0;
-  border: 0.25em black solid;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  outline: none;
-
-  mat-card-title {
-    font-size: 2em;
-  }
-
-  .details {
-    margin: 1em;
-  }
-}

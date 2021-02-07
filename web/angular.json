@@ -65,18 +65,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "recipes:build"
+            "browserTarget": "cookbook:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "recipes:build:production"
+              "browserTarget": "cookbook:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "recipes:build"
+            "browserTarget": "cookbook:build"
           }
         },
         "test": {
@@ -114,11 +114,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "recipes:serve"
+            "devServerTarget": "cookbook:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "recipes:serve:production"
+              "devServerTarget": "cookbook:serve:production"
             }
           }
         }
